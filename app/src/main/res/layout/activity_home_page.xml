@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="homePageModel"
+                type="com.mvvm.design.pattern.model.LoginViewModel"/>
+
+        <import type="com.mvvm.design.pattern.utils.Constants"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.activity.LoginActivity">
+
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/email_parent_layout"
+                showError="@{homePageModel.status==Constants.INVALID_EMAIL?@string/error_invalid_email:@string/emptyString}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_email"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="100"
+                    android:onTextChanged="@{(newText,start,before,count)->homePageModel.getLoginModel().onEmailChanged(newText)}"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout"
+                showError="@{homePageModel.status==Constants.INVALID_PASSWORD?@string/error_invalid_pwd:@string/emptyString}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/email_parent_layout"
+                app:layout_constraintStart_toStartOf="@+id/email_parent_layout"
+                app:layout_constraintTop_toTopOf="@+id/guideline">
+
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_password"
+                    android:inputType="textPassword"
+                    android:maxLength="20"
+                    android:onTextChanged="@{(newText,start,before,count)->homePageModel.getLoginModel().onPasswordChanged(newText)}"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5"/>
+
+        <Button
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{()->homePageModel.onLoginClick()}"
+                android:text="@string/label_login"
+                app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>
