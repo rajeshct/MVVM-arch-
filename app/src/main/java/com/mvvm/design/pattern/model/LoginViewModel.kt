@@ -1,21 +1,24 @@
 package com.mvvm.design.pattern.model
 
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableInt
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.os.Handler
+import com.mvvm.design.pattern.network.Resource
+import com.mvvm.design.pattern.persistance.tables.LoginResponse
 import com.mvvm.design.pattern.repository.UserRepository
 import com.mvvm.design.pattern.utils.Constants
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class LoginViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(private val userRepository: UserRepository)
+    : CustomObservableViewModel() {
 
-    private val status = ObservableInt(Constants.INVALID_CHOICE)
+    private val result = MediatorLiveData<Resource<LoginResponse>>()
+
+    private var status = Constants.INVALID_CHOICE
 
     private val loginModel = LoginModel()
 
-    fun getStatus(): ObservableInt {
+    fun getStatus(): Int {
         return status
     }
 
@@ -23,25 +26,44 @@ class LoginViewModel @Inject constructor(private val userRepository: UserReposit
         return loginModel
     }
 
+    fun loginCallback(): LiveData<Resource<LoginResponse>> {
+        return result
+    }
+
+    private fun performLogin() {
+        if (status == Constants.PERFORM_LOGIN) {
+            val originalResource = userRepository.makeApiCall(loginModel)
+            result.addSource(originalResource) {
+                result.value = it
+            }
+        }
+    }
+
     fun onLoginClick() {
         when (loginModel.isAbleToLogin()) {
 
             Constants.INVALID_EMAIL -> {
-                status.set(Constants.INVALID_EMAIL)
+                this.status = Constants.INVALID_EMAIL
+                removeError()
             }
 
             Constants.INVALID_PASSWORD -> {
-                status.set(Constants.INVALID_PASSWORD)
+                this.status = Constants.INVALID_PASSWORD
+                removeError()
             }
 
             else -> {
-                status.set(Constants.PERFORM_LOGIN)
-                userRepository.saveToLocalDb(loginModel)
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
+                this.status = Constants.PERFORM_LOGIN
+                performLogin()
             }
         }
-        Handler().postDelayed({ status.set(Constants.INVALID_CHOICE) }, 2000L)
+        notifyChange()
+    }
+
+    private fun removeError() {
+        Handler().postDelayed({
+            status = Constants.INVALID_CHOICE
+            notifyChange()
+        }, 2000L)
     }
 }

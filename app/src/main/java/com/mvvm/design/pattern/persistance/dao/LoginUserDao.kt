@@ -12,7 +12,7 @@ interface LoginUserDao {
     fun getLoginResponse(): LiveData<LoginResponse>
 
     @Insert
-    fun insertLoginDetails(loginResponse: LoginResponse): Int
+    fun insertLoginDetails(loginResponse: LoginResponse): Long
 
 
 }

@@ -6,4 +6,5 @@ object Constants {
     const val PERFORM_LOGIN = 3
     const val INVALID_CHOICE = 4
     const val SHOW_COMMON_MESSAGE = ""
+    const val NO_RESPONSE = "no_response"
 }

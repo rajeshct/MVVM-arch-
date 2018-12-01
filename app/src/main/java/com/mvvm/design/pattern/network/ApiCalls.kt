@@ -1,8 +1,8 @@
 package com.mvvm.design.pattern.network
 
+import android.arch.lifecycle.LiveData
 import com.mvvm.design.pattern.model.LoginModel
 import com.mvvm.design.pattern.persistance.tables.LoginResponse
-import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -14,6 +14,6 @@ interface ApiCalls {
      * @return the single
      */
     @POST("api/User/Login")
-    fun performLogin(@Body loginRequest: LoginModel): Single<GenericResponse<LoginResponse>>
+    fun performLogin(@Body loginRequest: LoginModel): LiveData<ApiResponse<GenericResponse<LoginResponse>>>
 
 }

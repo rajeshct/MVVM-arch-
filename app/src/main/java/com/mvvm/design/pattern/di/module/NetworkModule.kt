@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.mvvm.design.pattern.utils.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -42,6 +43,7 @@ class NetworkModule(private val baseUrl: String) {
     fun getRetrofitInstance(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .baseUrl(baseUrl)
             .client(okHttpClient)
             .build()

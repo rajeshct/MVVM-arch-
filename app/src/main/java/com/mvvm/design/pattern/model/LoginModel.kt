@@ -12,7 +12,7 @@ data class LoginModel(var email: String = "", var password: String = "") {
     }
 
     private fun isValidPassword(): Boolean {
-        return !TextUtils.isEmpty(password) && password.length > 4
+        return !TextUtils.isEmpty(password) && password.length > 2
     }
 
     fun isAbleToLogin(): Int {
