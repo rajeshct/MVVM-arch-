@@ -15,28 +15,39 @@ class UserRepository @Inject constructor(private val retrofit: Retrofit
 
     fun makeApiCall(loginModel: LoginModel): LiveData<Resource<LoginResponse>> {
         return object : NetworkBoundResource<LoginResponse, GenericResponse<LoginResponse>>(appExecutors) {
-
-            override fun shouldFetchFromDb(): Boolean {
+            override fun isFetchFromDb(): Boolean {
                 return false
             }
 
             override fun saveCallResult(item: GenericResponse<LoginResponse>) {
                 item.data?.let {
-                    it.userEmail = ""
                     appLocalDatabase.getLoginUserDao().insertLoginDetails(it)
                 }
             }
 
-            override fun shouldFetch(data: LoginResponse?): Boolean {
+            override fun getData(item: GenericResponse<LoginResponse>): LoginResponse {
+                val loginResponse = item.data
+                return if (loginResponse == null) {
+                    LoginResponse()
+                } else {
+                    return loginResponse
+                }
+            }
+
+            override fun createCall(): LiveData<ApiResponse<GenericResponse<LoginResponse>>> {
+                return retrofit.create(ApiCalls::class.java).performLogin(loginModel)
+            }
+
+            override fun isSaveInDb(): Boolean {
+                return true
+            }
+
+            override fun isFetchFromNetwork(data: LoginResponse?): Boolean {
                 return true
             }
 
             override fun loadFromDb(): LiveData<LoginResponse> {
                 return appLocalDatabase.getLoginUserDao().getLoginResponse()
-            }
-
-            override fun createCall(): LiveData<ApiResponse<GenericResponse<LoginResponse>>> {
-                return retrofit.create(ApiCalls::class.java).performLogin(loginModel)
             }
 
         }.asLiveData()

@@ -1,8 +1,10 @@
-package com.mvvm.design.pattern.model
+package com.mvvm.design.pattern.model.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.os.Handler
+import com.mvvm.design.pattern.model.CustomObservableViewModel
+import com.mvvm.design.pattern.model.LoginModel
 import com.mvvm.design.pattern.network.Resource
 import com.mvvm.design.pattern.persistance.tables.LoginResponse
 import com.mvvm.design.pattern.repository.UserRepository

@@ -10,7 +10,7 @@ import android.widget.FrameLayout
 import com.mvvm.design.pattern.R
 import com.mvvm.design.pattern.databinding.ActivityLoginBinding
 import com.mvvm.design.pattern.di.BasicComponent
-import com.mvvm.design.pattern.model.LoginViewModel
+import com.mvvm.design.pattern.model.viewmodel.LoginViewModel
 import com.mvvm.design.pattern.network.Status
 
 

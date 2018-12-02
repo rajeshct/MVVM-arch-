@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.mvvm.design.pattern.di.ViewModelFactory
 import com.mvvm.design.pattern.di.ViewModelKey
-import com.mvvm.design.pattern.model.LoginViewModel
+import com.mvvm.design.pattern.model.viewmodel.LoginViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

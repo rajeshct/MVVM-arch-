@@ -7,5 +7,5 @@ import android.arch.persistence.room.PrimaryKey
 data class LoginResponse(
         @PrimaryKey(autoGenerate = true)
         var primaryKey: Int = 1,
-        var userEmail: String
+        var userEmail: String = ""
 )

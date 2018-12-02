@@ -3,6 +3,7 @@
     package="com.mvvm.design.pattern">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".CustomApplication"
         android:allowBackup="true"
